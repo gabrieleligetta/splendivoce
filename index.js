@@ -128,6 +128,7 @@ function play(guild, song) {
         filter : "audioonly",
         opusEncoded : false,
         fmt : "mp3",
+        bitrate: 96000,
         encoderArgs: ['-af', 'bass=g=10,dynaudnorm=f=200']
     });
 
