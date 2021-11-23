@@ -6,10 +6,10 @@ const client = new Discord.Client();
 
 const queue = new Map();
 
-client.on('ready', () => {
-    client.user.setStatus('online').then(r => console.log(r));
-    client.user.setActivity('D&D').then(r => console.log(r));
-});
+// client.on('ready', () => {
+//     client.user.setStatus('online').then(r => console.log(r));
+//     client.user.setActivity('D&D').then(r => console.log(r));
+// });
 
 client.once("ready", () => {
     console.log("Ready!");
@@ -124,13 +124,21 @@ function play(guild, song) {
         return;
     }
 
+    let stream = ytdl(song.url, {
+        filter : "audioonly",
+        opusEncoded : false,
+        fmt : "mp3",
+        encoderArgs: ['-af', 'bass=g=10,dynaudnorm=f=200']
+    });
+
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url))
+        .play(stream, {type : "unknown"})
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));
+
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
 }
