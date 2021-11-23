@@ -6,10 +6,10 @@ const client = new Discord.Client();
 
 const queue = new Map();
 
-// client.on('ready', () => {
-//     client.user.setStatus('online').then(r => console.log(r));
-//     client.user.setActivity('D&D').then(r => console.log(r));
-// });
+client.on('ready', () => {
+    client.user.setStatus('online').then(r => console.log(r));
+    client.user.setActivity('D&D').then(r => console.log(r));
+});
 
 client.once("ready", () => {
     console.log("Ready!");
