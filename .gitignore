@@ -98,6 +98,9 @@ dist
 # Serverless directories
 .serverless/
 
+# Webstorm directories
+.idea/
+
 # FuseBox cache
 .fusebox/
 

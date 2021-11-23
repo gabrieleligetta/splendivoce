@@ -6,6 +6,11 @@ const client = new Discord.Client();
 
 const queue = new Map();
 
+client.on('ready', () => {
+    client.user.setStatus('online').then(r => console.log(r));
+    client.user.setActivity('D&D').then(r => console.log(r));
+});
+
 client.once("ready", () => {
     console.log("Ready!");
 });
@@ -25,22 +30,17 @@ client.on("message", async message => {
     const serverQueue = queue.get(message.guild.id);
 
     if (message.content.startsWith(`${prefix}play`)) {
-        execute(message, serverQueue);
-        return;
+        await execute(message, serverQueue);
+
     } else if (message.content.startsWith(`${prefix}skip`)) {
         skip(message, serverQueue);
-        return;
+
     } else if (message.content.startsWith(`${prefix}stop`)) {
         stop(message, serverQueue);
-        return;
-    } else {
-        message.channel.send("You need to enter a valid command!");
-    }
-});
 
-client.on('ready', () => {
-    client.user.setStatus('available')
-    client.user.setActivity('D&D');
+    } else {
+        await message.channel.send("You need to enter a valid command!");
+    }
 });
 
 
@@ -135,4 +135,4 @@ function play(guild, song) {
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
 }
 
-client.login(token);
+client.login(token).then(r => console.log(r));
